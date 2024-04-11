@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { faker } from '@faker-js/faker';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -51,7 +52,7 @@ export default function AppNewsUpdate({ title, subheader, list, ...other }) {
       </Grid>
       {activeTrip && (
         <Grid sx={{ width: '100%' }}>
-          <Card sx={{ p: '20px', '& > *': { mb: 3 } }}>
+          <Card sx={{ p: '20px', '& > *': { mb: 2 } }}>
             <CardHeader
               title={`Информация о заявке ${activeTrip}`}
               subheader={'Ждет решения'}
@@ -92,7 +93,7 @@ export default function AppNewsUpdate({ title, subheader, list, ...other }) {
                 </Typography>
               </Paper>
             </Stack>
-
+            <Divider sx={{ borderStyle: 'dashed' }} />
             <Box>
               <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }} noWrap>
                 Цель поездки
@@ -101,32 +102,50 @@ export default function AppNewsUpdate({ title, subheader, list, ...other }) {
                 Хочу работать и пить коктейли, загорать и зарабатывать деньги!
               </Typography>
             </Box>
+            <Divider sx={{ borderStyle: 'dashed', mb: 0 }} />
 
             <AppOrderTimeline
-              title="Order Timeline"
-              list={[...Array(5)].map((_, index) => ({
+              title="Статус заявки №123"
+              list={[...Array(4)].map((_, index) => ({
                 id: faker.string.uuid(),
-                title: [
-                  '1983, orders, $4220',
-                  '12 Invoices have been paid',
-                  'Order #37745 from September',
-                  'New order placed #XF-2356',
-                  'New order placed #XF-2346',
-                ][index],
+                title: ['Заявка создана', 'Заявка создана', 'Заявка создана', 'Заявка создана'][
+                  index
+                ],
                 type: `order${index + 1}`,
                 time: faker.date.past(),
               }))}
             />
 
-            <Divider sx={{ borderStyle: 'dashed' }} />
-
-            <Box sx={{ p: 2, textAlign: 'right' }}>
-              <Button
-                size="small"
-                color="inherit"
-                endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}
-              >
-                Раскрыть список
+            <Divider sx={{ borderStyle: 'dashed', mb: 0 }} />
+            <Box>
+              <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }} noWrap>
+                Бронирование и расходы
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.primary' }} noWrap>
+                Хочу работать и пить коктейли, загорать и зарабатывать деньги!
+              </Typography>
+            </Box>
+            <Box>
+              <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }} noWrap>
+                Комментарии
+              </Typography>
+              <Box>m</Box>
+            </Box>
+            <Box>
+              <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }} noWrap>
+                Прикрепленные документы
+              </Typography>
+              <Link>Приказ</Link>
+              <Button size="small" color="inherit" startIcon={<Iconify icon="ic:baseline-plus" />}>
+                Прикрепить документы
+              </Button>
+            </Box>
+            <Box sx={{ textAlign: 'left' }} spa>
+              <Button variant="contained" color="success">
+                Одобрить заявку
+              </Button>
+              <Button variant="contained" color="error">
+                Отказать
               </Button>
             </Box>
           </Card>

@@ -5,6 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import axios from 'axios';
 
 const validationSchema = yup.object({
   country: yup.string().required('Поле обязательно'),
@@ -23,15 +24,37 @@ const CreateTripForm = () => {
       additionalDocuments: null,
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      const formData = new FormData();
+      Object.keys(values).forEach((key) => {
+        formData.append(
+          key,
+          key === 'returnDate' || key === 'departureDate'
+            ? new Date(values[key]).getTime()
+            : values[key]
+        );
+      });
+
+      try {
+        const response = await axios.post('/create', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        console.log(response.data);
+      } catch (error) {
+        console.error('Ошибка при отправке данных:', error);
+      }
     },
   });
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Paper elevation={5}>
-        <form onSubmit={formik.handleSubmit} style={{ display: 'grid', gap: '20px', padding: '20px' }}>
+      <Paper elevation={2}>
+        <form
+          onSubmit={formik.handleSubmit}
+          style={{ display: 'grid', gap: '20px', padding: '20px' }}
+        >
           <TextField
             fullWidth
             id="country"
@@ -93,7 +116,7 @@ const CreateTripForm = () => {
               formik.setFieldValue('additionalDocuments', event.currentTarget.files[0]);
             }}
           />
-          <Button color="primary" variant="contained" fullWidth type="submit">
+          <Button color="primary" variant="contained" type="submit">
             Отправить на согласование
           </Button>
         </form>

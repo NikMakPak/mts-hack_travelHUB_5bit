@@ -28,25 +28,7 @@ export default function AppView() {
       <Typography variant="h4" sx={{ mb: 5 }}>
         Заполните форму
       </Typography>
-      
 
-      <Grid xs={12} md={6} lg={4}>
-        <AppOrderTimeline
-          title="Order Timeline"
-          list={[...Array(5)].map((_, index) => ({
-            id: faker.string.uuid(),
-            title: [
-              '1983, orders, $4220',
-              '12 Invoices have been paid',
-              'Order #37745 from September',
-              'New order placed #XF-2356',
-              'New order placed #XF-2346',
-            ][index],
-            type: `order${index + 1}`,
-            time: faker.date.past(),
-          }))}
-        />
-      </Grid>
       <CreateTripForm />
       {/* <Grid container spacing={3}>
         <Grid xs={12} sm={6} md={3}>
