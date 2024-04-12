@@ -81,7 +81,7 @@ public class Controller {
     }
 
     @PostMapping("/api/manager/trip/approve")
-    public void approveManager(@RequestHeader("Authorization") String token,
+    public void approveManager(@RequestParam("files") MultipartFile[] file, @RequestHeader("Authorization") String token,
                                  @RequestBody BidDTO bidDTO){
         bidService.approveManager(bidDTO);
     }
@@ -97,15 +97,17 @@ public class Controller {
         documentService.pdfReader(response, documentService.pdfCreat("Vladick and Sashik"));
     }
 
-    /*@GetMapping("/save")
-    public void savePdf(@RequestParam("Document") MultipartFile file) throws IOException {
-        documentService.pdfUpload(file, DocumentNameEnum.DOCUMENT_BILL.getDocumentName());
-    }*/
-
     @GetMapping("/save")
+    public void savePdf(@RequestParam("files") MultipartFile[] file) throws IOException {
+        documentService.pdfUpload(file, DocumentNameEnum.DOCUMENT_BILL.getDocumentName());
+    }
+
+    /*@GetMapping("/save")
     public void savePdf(HttpServletResponse response) throws IOException {
         documentService.getDocument(1, response);
     }
+*/
+
 
 
 }

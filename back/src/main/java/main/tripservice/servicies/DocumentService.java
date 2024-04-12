@@ -66,13 +66,16 @@ public class DocumentService {
         }
     }
 
-    public void pdfUpload(MultipartFile file, String docType) throws IOException {
+    public void pdfUpload(MultipartFile[] file, String docType) throws IOException {
 
-        main.tripservice.models.repository.Document pdfFile = new main.tripservice.models.repository.Document();
-        pdfFile.setName(file.getOriginalFilename());
-        pdfFile.setType(docType);
-        pdfFile.setDocument(file.getBytes());
-        documentRepository.save(pdfFile);
+        for (MultipartFile file1 : file) {
+
+            main.tripservice.models.repository.Document pdfFile = new main.tripservice.models.repository.Document();
+            pdfFile.setName(file1.getOriginalFilename());
+            pdfFile.setType(docType);
+            pdfFile.setDocument(file1.getBytes());
+            documentRepository.save(pdfFile);
+        }
 
     }
 

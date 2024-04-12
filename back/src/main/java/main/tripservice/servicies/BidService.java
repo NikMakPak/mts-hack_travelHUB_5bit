@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import java.math.BigDecimal;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -134,6 +135,7 @@ public class BidService {
                 break;
             case (7):
                 status = new Status(statusCodeRepository.findByCode(9).orElseThrow());
+                bid.setPrepayment(BigDecimal.valueOf(1000 * bid.getUser().getGrade()));
                 break;
         }
         bidStatus.add(status);
