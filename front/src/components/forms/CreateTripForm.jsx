@@ -37,7 +37,7 @@ const CreateTripForm = () => {
 
       try {
         const response = await axios.post(
-          `${import.meta.env.VITE_REACT_API_URL}/create`,
+          `api/create`,
           formData,
           {
             headers: {
