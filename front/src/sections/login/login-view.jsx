@@ -32,11 +32,10 @@ export default function LoginView() {
   const [showPassword, setShowPassword] = useState(false);
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string()
+    login: Yup.string()
       .email('Введите действительный адрес электронной почты')
       .required('Это поле обязательно'),
     password: Yup.string()
-      .min(8, 'Пароль должен содержать не менее 8 символов')
       .required('Это поле обязательно'),
   });
 
@@ -49,24 +48,22 @@ export default function LoginView() {
 
   const renderForm = (
     <Formik
-      initialValues={{ email: '', password: '' }}
+      initialValues={{ login: '', password: '' }}
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
     >
-      {(
-        { isSubmitting, errors, touched } 
-      ) => (
+      {({ isSubmitting, errors, touched }) => (
         <Form>
           <Field
             as={TextField}
-            name="email"
+            name="login"
             type="email"
             label="Email"
             variant="outlined"
             fullWidth
             margin="normal"
-            error={touched.email && Boolean(errors.email)} 
-            helperText={touched.email && errors.email} 
+            error={touched.email && Boolean(errors.email)}
+            helperText={touched.email && errors.email}
           />
           <Field
             as={TextField}
@@ -85,8 +82,8 @@ export default function LoginView() {
                 </InputAdornment>
               ),
             }}
-            error={touched.password && Boolean(errors.password)} 
-            helperText={touched.password && errors.password} 
+            error={touched.password && Boolean(errors.password)}
+            helperText={touched.password && errors.password}
           />
           <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
             <Link variant="subtitle2" underline="hover">

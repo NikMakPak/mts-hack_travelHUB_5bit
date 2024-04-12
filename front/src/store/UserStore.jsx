@@ -2,7 +2,7 @@ import { makeAutoObservable } from 'mobx';
 import axios from 'axios';
 
 class UserStore {
-  JWT_Token = '';
+  token = '';
   id = 0;
   name = '';
   surname = '';
@@ -20,7 +20,7 @@ class UserStore {
   }
 
   setUserData(data) {
-    this.JWT_Token = data.JWT_Token;
+    this.token = data.token;
     this.id = data.id;
     this.name = data.name;
     this.surname = data.surname;
@@ -35,10 +35,19 @@ class UserStore {
 
   async login(credentials) {
     try {
-      const response = await axios.post(`${import.meta.env.VITE_REACT_API_URL}/login`, credentials);
-      const { data } = response;
+      const response = await axios.post(
+        `${import.meta.env.VITE_REACT_API_URL}/login`,
+        credentials,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            // Добавьте здесь любые другие заголовки, которые могут быть необходимы
+          },
+        }
+      );const { data } = response;
       this.setUserData(data);
-      localStorage.setItem('JWT_Token', data.JWT_Token);
+      localStorage.setItem('token', data.token);
       this.isAuth = true;
       return true;
     } catch (error) {
