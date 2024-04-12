@@ -69,6 +69,7 @@ public class DocumentService {
     public void pdfUpload(MultipartFile file, String docType) throws IOException {
 
         main.tripservice.models.repository.Document pdfFile = new main.tripservice.models.repository.Document();
+        pdfFile.setName(file.getOriginalFilename());
         pdfFile.setType(docType);
         pdfFile.setDocument(file.getBytes());
         documentRepository.save(pdfFile);

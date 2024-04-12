@@ -5,7 +5,7 @@ public enum BidStatusEnum {
     BID_CREATED("Bid created"),
     BID_FIRST_SQUAD_APPROVED("Bid was firstly approved by SQUAD"),
     BID_FIRST_SQUAD_REJECTED("Bid was firstly rejected by SQUAD"),
-    ID_SECOND_MANAGER_APPROVED("Bid was secondly approved by MANAGER"),
+    BID_FIRST_MANAGER_APPROVED("Bid was first approved by MANAGER"),
     BID_FIRST_ACCOUNTING_APPROVED("Bid firstly was approved by ACCOUNTING"),
     BID_FIRST_ACCOUNTING_REJECTED("Bid firstly was rejected by ACCOUNTING"),
     BID_SECOND_SQUAD_APPROVED("Bid was secondly approved by SQUAD"),

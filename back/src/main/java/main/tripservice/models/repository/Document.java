@@ -22,6 +22,8 @@ public class Document {
     @Column(nullable = false)
     String type;
 
+    String name;
+
     @Lob
     byte[] document;
 }

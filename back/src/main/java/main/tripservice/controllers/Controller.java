@@ -36,13 +36,18 @@ public class Controller {
         bidService.createBid(token, bidDTO);
     }
 
-    @GetMapping(value = {"/api/user/bids", "/accounting/trips"})
+    @GetMapping("/api/user/bids")
     public ResponseEntity<BidDAO> findBidsForUser(@RequestHeader("Authorization") String token) {
         return new ResponseEntity<>(bidService.findAllBidForUser(token), HttpStatus.OK);
     }
     @GetMapping("/api/tribe/trips")
     public ResponseEntity<BidDAO> finBidsForTribe(@RequestHeader("Authorization") String token) {
-        return new ResponseEntity<>(bidService.findAllForTribe(token), HttpStatus.OK);
+        return new ResponseEntity<>(bidService.findAllBidForTribe(token), HttpStatus.OK);
+    }
+
+    @GetMapping("/api/accounting/trips")
+    public ResponseEntity<BidDAO> findBidsForAccounting(@RequestHeader("Authorization") String token) {
+        return new ResponseEntity<>(bidService.findAllBidForAccounting(token), HttpStatus.OK);
     }
 
     @PostMapping("/api/tribe/trip/approve")
@@ -57,10 +62,22 @@ public class Controller {
         bidService.rejectSquad(bidDTO);
     }
 
+    @PostMapping("/api/accounting/trip/approve")
+    public void approveAccounting(@RequestHeader("Authorization") String token,
+                                 @RequestBody BidDTO bidDTO){
+        bidService.approveAccounting(bidDTO);
+    }
+
     @PostMapping("/api/accounting/trip/reject")
     public void rejectAccounting(@RequestHeader("Authorization") String token,
                             @RequestBody BidDTO bidDTO){
         bidService.rejectAccounting(bidDTO);
+    }
+
+    @PostMapping("/api/manager/trip/approve")
+    public void approveManager(@RequestHeader("Authorization") String token,
+                                 @RequestBody BidDTO bidDTO){
+        bidService.approveManager(bidDTO);
     }
 
     @PostMapping("/api/registration")
