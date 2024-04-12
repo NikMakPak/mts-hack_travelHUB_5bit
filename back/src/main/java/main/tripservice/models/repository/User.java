@@ -44,7 +44,7 @@ public class User {
     @JoinColumn(name = "user_bids")
     Set<Bid> bids;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_squad")
     Squad squad;
 
