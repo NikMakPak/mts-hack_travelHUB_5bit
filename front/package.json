@@ -34,6 +34,8 @@
     "formik": "^2.4.5",
     "history": "^5.3.0",
     "lodash": "^4.17.21",
+    "mobx": "^6.12.3",
+    "mobx-react-lite": "^4.0.7",
     "numeral": "^2.0.6",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
@@ -47,6 +49,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react-swc": "^3.4.0",
+    "dotenv": "^16.4.5",
     "eslint": "^8.51.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^9.0.0",
