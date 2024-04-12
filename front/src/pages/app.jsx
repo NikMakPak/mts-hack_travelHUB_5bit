@@ -1,18 +1,18 @@
 import { Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'src/routes/hooks';
 import { AppView } from 'src/sections/overview/view';
 import UserStore from 'src/store/UserStore';
 
 // ----------------------------------------------------------------------
 
 const AppPage = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { isAuth } = UserStore;
 
   useEffect(() => {
-    if(!isAuth) navigate("/login");
+    if(!isAuth) router.push('/login');
   }, [])
   
   return (

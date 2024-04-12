@@ -35,7 +35,7 @@ class UserStore {
 
   async login(credentials) {
     try {
-      const response = await axios.post('/login', credentials);
+      const response = await axios.post(`${import.meta.env.VITE_REACT_API_URL}/login`, credentials);
       const { data } = response;
       this.setUserData(data);
       localStorage.setItem('JWT_Token', data.JWT_Token);
