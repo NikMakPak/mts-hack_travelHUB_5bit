@@ -9,6 +9,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import main.tripservice.enums.DocumentNameEnum;
 import main.tripservice.exception.PdfException;
+import main.tripservice.models.dto.BidDTO;
+import main.tripservice.models.repository.Bid;
+import main.tripservice.repositories.BidRepository;
 import main.tripservice.repositories.DocumentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +30,8 @@ import java.util.Date;
 public class DocumentService {
 
     private final DocumentRepository documentRepository;
+
+    private final BidRepository bidRepository;
 
     public byte[] pdfCreat(String message) {
 
@@ -66,7 +71,7 @@ public class DocumentService {
         }
     }
 
-    public void pdfUpload(MultipartFile[] file, String docType) throws IOException {
+    public void pdfUpload(BidDTO bidDTO, MultipartFile[] file, String docType) throws IOException {
 
         for (MultipartFile file1 : file) {
 
@@ -74,7 +79,9 @@ public class DocumentService {
             pdfFile.setName(file1.getOriginalFilename());
             pdfFile.setType(docType);
             pdfFile.setDocument(file1.getBytes());
-            documentRepository.save(pdfFile);
+            Bid bid = bidRepository.findById(bidDTO.getId()).orElseThrow();
+            bid.getHotel().add(pdfFile);
+            bidRepository.save(bid);
         }
 
     }

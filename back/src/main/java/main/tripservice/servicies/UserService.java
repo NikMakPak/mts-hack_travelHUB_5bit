@@ -8,9 +8,6 @@ import main.tripservice.repositories.SquadRepository;
 import main.tripservice.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @AllArgsConstructor
 @Service
 public class UserService {
@@ -22,8 +19,8 @@ public class UserService {
         private final SquadRepository squadRepository;
     public void creatUser(UserDto userDto){
         User user = new User(cryptService.encryption(userDto.getName()),cryptService.encryption(userDto.getSurname()),userDto.getEmail(), userDto.getPassword(), userDto.getGrade(),cryptService.encryption(userDto.getPassport()));
-        user.setRole(roleRepository.getRoleById(userDto.getRole()).orElseThrow());
-        user.setSquad(squadRepository.getSquadById(userDto.getSquad()).orElseThrow());
+        user.setRole(roleRepository.findRoleById(userDto.getRole()).orElseThrow());
+        user.setSquad(squadRepository.findSquadById(userDto.getSquad()).orElseThrow());
         userRepository.save(user);
     }
 

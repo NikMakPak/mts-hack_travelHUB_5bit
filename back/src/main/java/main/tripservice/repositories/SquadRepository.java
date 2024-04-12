@@ -9,6 +9,6 @@ import java.util.Optional;
 @Repository
 public interface SquadRepository extends CrudRepository<Squad, Long> {
 
-    Optional<Squad> getSquadById(int id);
+    Optional<Squad> findSquadById(int id);
 
 }
