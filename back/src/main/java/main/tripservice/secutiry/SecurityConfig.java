@@ -77,6 +77,7 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/api/registration").permitAll()
                                 .requestMatchers("/api/login").permitAll()
+                                .requestMatchers("/save").permitAll()
                                 .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN", "ACCOUNTING", "MANAGER", "SQUAD")
                                 .requestMatchers("/api/tribe/**").hasAnyRole("SQUAD", "ADMIN")
                                 .requestMatchers("/api/accounting/**").hasAnyRole("ACCOUNTING", "ADMIN")

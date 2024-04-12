@@ -48,7 +48,7 @@ public class User {
     @JoinColumn(name = "user_squad")
     Squad squad;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_role")
     Role role;
 

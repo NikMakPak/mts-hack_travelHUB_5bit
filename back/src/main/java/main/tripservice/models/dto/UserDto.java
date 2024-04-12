@@ -24,6 +24,10 @@ public class UserDto {
 
     String passport;
 
+    int role;
+
+    int squad;
+
 
 
 }

@@ -1,14 +1,12 @@
 package main.tripservice.models.repository;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
 @NoArgsConstructor
+@RequiredArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
@@ -19,9 +17,14 @@ public class Document {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
+    @NonNull
     @Column(nullable = false)
     String type;
 
+    @NonNull
+    String name;
+
+    @NonNull
     @Lob
     byte[] document;
 }

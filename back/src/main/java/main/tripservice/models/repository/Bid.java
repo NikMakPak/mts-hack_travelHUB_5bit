@@ -52,19 +52,19 @@ public class Bid {
     @JoinColumn(name = "bid_expenses")
     Set<Expense> expenses;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "bid_order")
     Document order;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "bid_tickets")
     Set<Document> tickets;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "bid_hotels")
     Set<Document> hotel;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "bid_report")
     Document report;
 
