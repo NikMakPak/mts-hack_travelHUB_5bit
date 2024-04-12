@@ -42,7 +42,7 @@ public class Controller {
     }
     @GetMapping(value = {"/tribe/trips"})
     public ResponseEntity<BidDAO> finBidsForTribe(@RequestHeader("Authorization") String token) {
-        return new ResponseEntity<>(bidService.findAllForUser(token), HttpStatus.OK);
+        return new ResponseEntity<>(bidService.findAllForTribe(token), HttpStatus.OK);
     }
 
     @PostMapping("/tribe/trip/approve")
