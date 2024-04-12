@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -27,6 +28,7 @@ public class BidService {
     private final BidRepository bidRepository;
     private final AuthentificationService authentificationService;
     private final StatusCodeRepository statusCodeRepository;
+    private final UserRepository userRepository;
 
     public void createBid(String token, BidDTO bidDTO) {
         User user = authentificationService.getUserFromToken(token);
@@ -36,11 +38,16 @@ public class BidService {
         bidRepository.save(bid);
     }
 
-    public BidDAO findAllForUser(String token){
-        User user = authentificationService.getUserFromToken(token);
-        Set<Bid> bids = user.getBids();
-        BidDAO bidDAO = new BidDAO(bids);
-        return bidDAO;
+    public BidDAO findAllBidForUser(String token){
+        Set<User> users = userRepository.findAllBySquad(authentificationService.getUserFromToken(token).getSquad()).orElseThrow();
+        Set<Bid> bids = new HashSet<>();
+        for (User user : users){
+            for (Bid bid : user.getBids()){
+                if (bid.getStatuses().get(bid.getStatuses().size() - 1).getStatusCode().getName().equals(BidStatusEnum.BID_CREATED.getBidStatus()) || bid.getStatuses().get(bid.getStatuses().size() - 1).getStatusCode().getName().equals(BidStatusEnum.BID_FIRST_ACCOUNTING_APPROVED.getBidStatus()))
+                    bids.add(bid);
+            }
+        }
+        return new BidDAO(bids);
     }
 
     public BidDAO findAllForTribe(String token){

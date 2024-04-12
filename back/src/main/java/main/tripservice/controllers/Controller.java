@@ -30,40 +30,40 @@ public class Controller {
     private final UserService userService;
     private final DocumentService documentService;
 
-    @PostMapping("/user/trip/business/create")
+    @PostMapping("/api/user/trip/business/create")
     public void createBid(@RequestHeader("Authorization") String token,
                           @RequestBody BidDTO bidDTO) {
         bidService.createBid(token, bidDTO);
     }
 
-    @GetMapping(value = {"/user/bids", "/accounting/trips"})
+    @GetMapping(value = {"/api/user/bids", "/accounting/trips"})
     public ResponseEntity<BidDAO> findBidsForUser(@RequestHeader("Authorization") String token) {
-        return new ResponseEntity<>(bidService.findAllForUser(token), HttpStatus.OK);
+        return new ResponseEntity<>(bidService.findAllBidForUser(token), HttpStatus.OK);
     }
-    @GetMapping(value = {"/tribe/trips"})
+    @GetMapping("/api/tribe/trips")
     public ResponseEntity<BidDAO> finBidsForTribe(@RequestHeader("Authorization") String token) {
         return new ResponseEntity<>(bidService.findAllForTribe(token), HttpStatus.OK);
     }
 
-    @PostMapping("/tribe/trip/approve")
+    @PostMapping("/api/tribe/trip/approve")
     public void approveSquad(@RequestHeader("Authorization") String token,
                              @RequestBody BidDTO bidDTO){
         bidService.approveSquad(bidDTO);
     }
 
-    @PostMapping("/tribe/trip/reject")
+    @PostMapping("/api/tribe/trip/reject")
     public void rejectSquad(@RequestHeader("Authorization") String token,
                              @RequestBody BidDTO bidDTO){
         bidService.rejectSquad(bidDTO);
     }
 
-    @PostMapping("/accounting/trip/reject")
+    @PostMapping("/api/accounting/trip/reject")
     public void rejectAccounting(@RequestHeader("Authorization") String token,
                             @RequestBody BidDTO bidDTO){
         bidService.rejectAccounting(bidDTO);
     }
 
-    @PostMapping("/registration")
+    @PostMapping("/api/registration")
     public void creatUser(@RequestBody UserDto userDto){
         userService.creatUser(userDto);
     }
