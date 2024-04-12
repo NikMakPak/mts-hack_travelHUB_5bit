@@ -34,16 +34,13 @@ export default function LoginView() {
 
   const validationSchema = Yup.object().shape({
     login: Yup.string()
-      .email('Введите действительный адрес электронной почты')
       .required('Это поле обязательно'),
     password: Yup.string()
       .required('Это поле обязательно'),
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    // password: CryptoJS.SHA256(values.password).toString();
-      const ok = await login(values);
-      console.log(ok);
+      const ok = await login({...values, password: CryptoJS.SHA256(values.password).toString()});
       if (ok) router.push('/');
       setSubmitting(false);
   };
@@ -59,7 +56,7 @@ export default function LoginView() {
           <Field
             as={TextField}
             name="login"
-            type="email"
+            type="text"
             label="Email"
             variant="outlined"
             fullWidth
