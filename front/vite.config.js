@@ -28,9 +28,15 @@ export default defineConfig({
     ],
   },
   server: {
-    https: {
-      key: './travelhub-privateKey.key',
-      cert: './travelhub.crt',
+    proxy: {
+      '/api': {
+        target: 'https://localhost:443',
+        changeOrigin: true,
+        secure: false,
+      },
     },
+  },
+  preview: {
+    port: 3000,
   },
 });

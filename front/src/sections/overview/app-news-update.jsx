@@ -25,14 +25,18 @@ export default function AppNewsUpdate({ title, subheader, list, ...other }) {
 
   return (
     <Grid container spacing={1} wrap="nowrap" gap={3}>
-      <Grid xs={5}>
+      <Grid xs={5.5}>
         <Card>
           <CardHeader title={title} subheader={subheader} sx={{ mb: '15px' }} />
 
           <Scrollbar>
             <Stack>
-              {list.map((news) => (
-                <NewsItem key={news.id} news={news} setActiveTrip={setActiveTrip} />
+              {list.map((currentBid) => (
+                <NewsItem
+                  key={currentBid.id}
+                  currentBid={currentBid}
+                  setActiveTrip={setActiveTrip}
+                />
               ))}
             </Stack>
           </Scrollbar>
@@ -106,11 +110,15 @@ export default function AppNewsUpdate({ title, subheader, list, ...other }) {
 
             <AppOrderTimeline
               title="Статус заявки №123"
-              list={[...Array(4)].map((_, index) => ({
+              list={[...Array(5)].map((_, index) => ({
                 id: faker.string.uuid(),
-                title: ['Заявка создана', 'Заявка создана', 'Заявка создана', 'Заявка создана'][
-                  index
-                ],
+                title: [
+                  'Заявка создана',
+                  'Одобрена руководителем',
+                  'Одобрена Тревел менеджером',
+                  'Одобрена бухгалтером',
+                  'Подписан приказ',
+                ][index],
                 type: `order${index + 1}`,
                 time: faker.date.past(),
               }))}
@@ -163,8 +171,8 @@ AppNewsUpdate.propTypes = {
 
 // ----------------------------------------------------------------------
 
-function NewsItem({ news, setActiveTrip }) {
-  const { image, title, description, status, id } = news;
+function NewsItem({ currentBid, setActiveTrip }) {
+  const { image, title, description, status,dates, id } = currentBid;
 
   return (
     <Box
@@ -188,22 +196,22 @@ function NewsItem({ news, setActiveTrip }) {
 
       <Box sx={{ minWidth: 240, flexGrow: 1, cursor: 'pointer' }}>
         <Typography sx={{ color: 'text.primary' }} noWrap>
-          {description}
+          {`#${id} ${title} ${description}`}
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-          {description}
+          {dates}
         </Typography>
       </Box>
 
       <Typography variant="caption" sx={{ pr: 3, flexShrink: 0, color: 'text.secondary' }}>
-        {status}
+        {status.title}
       </Typography>
     </Box>
   );
 }
 
 NewsItem.propTypes = {
-  news: PropTypes.shape({
+  currentBid: PropTypes.shape({
     image: PropTypes.string,
     title: PropTypes.string,
     description: PropTypes.string,

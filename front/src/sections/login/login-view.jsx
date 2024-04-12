@@ -20,6 +20,7 @@ import axios from 'axios';
 import * as Yup from 'yup';
 import LoadingButton from '@mui/lab/LoadingButton';
 import UserStore from 'src/store/UserStore';
+import CryptoJS from 'crypto-js';
 
 // ----------------------------------------------------------------------
 
@@ -40,9 +41,10 @@ export default function LoginView() {
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
+    // password: CryptoJS.SHA256(values.password).toString();
       const ok = await login(values);
       console.log(ok);
-      if (ok) router.push('/dashboard');
+      if (ok) router.push('/');
       setSubmitting(false);
   };
 
