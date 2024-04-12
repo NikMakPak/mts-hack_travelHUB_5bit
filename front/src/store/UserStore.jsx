@@ -36,7 +36,6 @@ class UserStore {
       const { data } = response;
       this.setUserData(data);
       this.isAuth = true;
-      console.log(toJS(this.userInfo))
       return true;
     } catch (error) {
       console.error('Login failed:', error);

@@ -149,7 +149,7 @@ export default function AppNewsUpdate({ title, subheader, list, ...other }) {
               </Button>
             </Box>
             <Box sx={{ textAlign: 'left' }} spa>
-              <Button variant="contained" color="success">
+              <Button variant="contained" sx={{mr:3}} color="success">
                 Одобрить заявку
               </Button>
               <Button variant="contained" color="error">
