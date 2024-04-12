@@ -1,6 +1,7 @@
 package main.tripservice.servicies;
 
 import main.tripservice.exception.EncryptException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.BadPaddingException;
@@ -26,7 +27,10 @@ import java.util.Base64;
 @Service
 public class CryptService {
 
+
     public byte[] encryption(String data) {
+
+
         String key = "-----BEGIN RSA PUBLIC KEY-----\n" +
                 "MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAsLRuFOnrtPU81TkI6TltbKkLmcbJ0qTmD/zmbx7Cj1rKK1x7+PVa8uLT+XgJ4cqCV8Z7Hy/rXqWpARSdVzNZaXNleCtz0fgdu7GYGJNPFja0EB6OsnJIaOYKuWaNSZpQsjtd0FxrLzSUOAJofCGopzxOc9NtBg9b2H51n8NpTzYzQ3m6PuW/D0Yj6UacgS/XhqcivbFFpFirdeDOm37e7D6sq8pUZTlPUFUIZt+ZbtknzNee6FhK/xIVFOLeo4GxSo0w0BTU+A9+JY2dlLM26WiJaa4b2LV9l7SQRE2fMn3HjyQxIvbbCC6JPTTOFIj9WIZ/+NQPTEkfdT2qxvbAvYkYUvxwbdOohigcOT66BrgMH4ESAgtY8Cx9VKHWRKHL0R2pIMaadcSCFtLWreh7avi+8VVZTVIy8tyU4c17xGx60XnC5BkS6kHYvkxCEPpQ/A7HzC1XFRpg6grq/k6hhkfSBL9tgDfO67SbWv/uUQq2ByQRPqL+oxAtmZbLfZGtAgMBAAE=\n" +
                 "-----END RSA PUBLIC KEY-----\n";
