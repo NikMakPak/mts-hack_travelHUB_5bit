@@ -16,8 +16,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -64,7 +70,7 @@ public class Controller {
 
     @PostMapping("/api/accounting/trip/approve")
     public void approveAccounting(@RequestHeader("Authorization") String token,
-                                 @RequestBody BidDTO bidDTO){
+                                 @RequestBody BidDTO bidDTO) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
         bidService.approveAccounting(bidDTO);
     }
 

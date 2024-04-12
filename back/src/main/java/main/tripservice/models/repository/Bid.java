@@ -52,7 +52,7 @@ public class Bid {
     @JoinColumn(name = "bid_expenses")
     Set<Expense> expenses;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "bid_order")
     Document order;
 

@@ -45,5 +45,5 @@ SELECT '12', 'ACCOUNTING create report' WHERE NOT EXISTS (SELECT 1 FROM status_c
 
 
 INSERT INTO users(email, grade, password, user_role)
-SELECT 'admin@admin', 3, 'admin', 1
+SELECT 'admin', 3, '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 1
 WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'admin@admin');

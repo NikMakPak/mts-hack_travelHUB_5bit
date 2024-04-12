@@ -5,10 +5,7 @@ import main.tripservice.enums.BidStatusEnum;
 import main.tripservice.exception.NoSuchException;
 import main.tripservice.models.DAO.BidDAO;
 import main.tripservice.models.dto.BidDTO;
-import main.tripservice.models.repository.Bid;
-import main.tripservice.models.repository.Status;
-import main.tripservice.models.repository.StatusCode;
-import main.tripservice.models.repository.User;
+import main.tripservice.models.repository.*;
 import main.tripservice.repositories.BidRepository;
 import main.tripservice.repositories.StatusCodeRepository;
 import main.tripservice.repositories.UserRepository;
@@ -16,6 +13,12 @@ import main.tripservice.secutiry.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -29,6 +32,8 @@ public class BidService {
     private final AuthentificationService authentificationService;
     private final StatusCodeRepository statusCodeRepository;
     private final UserRepository userRepository;
+    private final DocumentService documentService;
+    private final CryptService cryptService;
 
     public void createBid(String token, BidDTO bidDTO) {
         User user = authentificationService.getUserFromToken(token);
@@ -136,9 +141,19 @@ public class BidService {
         bidRepository.save(bid);
     }
 
-    public void approveAccounting(BidDTO bidDTO){
-
+    public void approveAccounting(BidDTO bidDTO) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
+        Bid bid = bidRepository.findById(bidDTO.getId()).orElseThrow(() -> new NoSuchException("No such user with id" + bidDTO.getId() + "in database"));
+        ArrayList<Status> bidStatus = bid.getStatuses();
+        int lastCode = bid.getStatuses().get(bid.getStatuses().size() - 1).getStatusCode().getCode();
+        Status status = new Status(statusCodeRepository.findByCode(lastCode +1).orElseThrow());
+        bidStatus.add(status);
+        bid.setStatuses(bidStatus);
+        byte[] document = documentService.pdfCreat("Приказ на поезду на сотрудника(фамилия):" + cryptService.decryption(bid.getUser().getSurname()));
+        bid.setOrder(new Document("Order", "orderforuser", document));
+        bidRepository.save(bid);
     }
+
+
 
 
 }
