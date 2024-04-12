@@ -35,7 +35,14 @@ public class BidService {
         bidRepository.save(bid);
     }
 
-    public BidDAO findAll(String token){
+    public BidDAO findAllForUser(String token){
+        User user = authentificationService.getUserFromToken(token);
+        Set<Bid> bids = user.getBids();
+        BidDAO bidDAO = new BidDAO(bids);
+        return bidDAO;
+    }
+
+    public BidDAO findAllForTribe(String token){
         User user = authentificationService.getUserFromToken(token);
         Set<Bid> bids = user.getBids();
         BidDAO bidDAO = new BidDAO(bids);

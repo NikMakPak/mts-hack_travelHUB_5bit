@@ -36,9 +36,13 @@ public class Controller {
         bidService.createBid(token, bidDTO);
     }
 
-    @GetMapping(value = {"/user/bids", "/tribe/trips", "/accounting/trips"})
-    public ResponseEntity<BidDAO> createBid(@RequestHeader("Authorization") String token) {
-        return new ResponseEntity<>(bidService.findAll(token), HttpStatus.OK);
+    @GetMapping(value = {"/user/bids", "/accounting/trips"})
+    public ResponseEntity<BidDAO> findBidsForUser(@RequestHeader("Authorization") String token) {
+        return new ResponseEntity<>(bidService.findAllForUser(token), HttpStatus.OK);
+    }
+    @GetMapping(value = {"/tribe/trips"})
+    public ResponseEntity<BidDAO> finBidsForTribe(@RequestHeader("Authorization") String token) {
+        return new ResponseEntity<>(bidService.findAllForUser(token), HttpStatus.OK);
     }
 
     @PostMapping("/tribe/trip/approve")
