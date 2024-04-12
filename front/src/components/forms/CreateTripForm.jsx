@@ -36,11 +36,15 @@ const CreateTripForm = () => {
       });
 
       try {
-        const response = await axios.post('/create', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+        const response = await axios.post(
+          `${import.meta.env.VITE_REACT_API_URL}/create`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
         console.log(response.data);
       } catch (error) {
         console.error('Ошибка при отправке данных:', error);

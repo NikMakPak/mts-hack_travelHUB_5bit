@@ -1,76 +1,111 @@
 import { useState } from 'react';
-
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { alpha, useTheme } from '@mui/material/styles';
-import InputAdornment from '@mui/material/InputAdornment';
-
+import {
+  Box,
+  Link,
+  Card,
+  Stack,
+  Divider,
+  Typography,
+  IconButton,
+  InputAdornment,
+} from '@mui/material';
+import { useTheme, alpha } from '@mui/material/styles';
 import { useRouter } from 'src/routes/hooks';
-
 import { bgGradient } from 'src/theme/css';
-
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
+import { Formik, Form, Field } from 'formik';
+import { TextField } from '@mui/material';
+import axios from 'axios';
+import * as Yup from 'yup';
+import LoadingButton from '@mui/lab/LoadingButton';
+import UserStore from 'src/store/UserStore';
 
 // ----------------------------------------------------------------------
 
 export default function LoginView() {
   const theme = useTheme();
+  const {login} = UserStore;
 
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleClick = () => {
-    router.push('/dashboard');
+  const validationSchema = Yup.object().shape({
+    email: Yup.string()
+      .email('Введите действительный адрес электронной почты')
+      .required('Это поле обязательно'),
+    password: Yup.string()
+      .min(8, 'Пароль должен содержать не менее 8 символов')
+      .required('Это поле обязательно'),
+  });
+
+  const handleSubmit = async (values, { setSubmitting }) => {
+      const ok = await login(values);
+      console.log(ok);
+      if (ok) router.push('/dashboard');
+      setSubmitting(false);
   };
 
   const renderForm = (
-    <>
-      <Stack spacing={3}>
-        <TextField name="email" label="Email address" />
-
-        <TextField
-          name="password"
-          label="Password"
-          type={showPassword ? 'text' : 'password'}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Stack>
-
-      <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
-        <Link variant="subtitle2" underline="hover">
-          Forgot password?
-        </Link>
-      </Stack>
-
-      <LoadingButton
-        fullWidth
-        size="large"
-        type="submit"
-        variant="contained"
-        color="inherit"
-        onClick={handleClick}
-      >
-        Login
-      </LoadingButton>
-    </>
+    <Formik
+      initialValues={{ email: '', password: '' }}
+      onSubmit={handleSubmit}
+      validationSchema={validationSchema}
+    >
+      {(
+        { isSubmitting, errors, touched } 
+      ) => (
+        <Form>
+          <Field
+            as={TextField}
+            name="email"
+            type="email"
+            label="Email"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            error={touched.email && Boolean(errors.email)} 
+            helperText={touched.email && errors.email} 
+          />
+          <Field
+            as={TextField}
+            name="password"
+            label="Password"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            type={showPassword ? 'text' : 'password'}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            error={touched.password && Boolean(errors.password)} 
+            helperText={touched.password && errors.password} 
+          />
+          <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
+            <Link variant="subtitle2" underline="hover">
+              Забыли пароль?
+            </Link>
+          </Stack>
+          <LoadingButton
+            loading={isSubmitting}
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+            color="inherit"
+          >
+            Войти
+          </LoadingButton>
+        </Form>
+      )}
+    </Formik>
   );
 
   return (
@@ -99,8 +134,8 @@ export default function LoginView() {
             maxWidth: 420,
           }}
         >
-          <Typography variant="h4" textAlign={'center'}>
-            Войти в <span style={{color:'red'}}>Travel HUB</span>
+          <Typography variant="h4" textAlign="center">
+            Войти в <span style={{ color: 'red' }}>Travel HUB</span>
           </Typography>
 
           <Divider sx={{ my: 3 }}>
