@@ -6,6 +6,7 @@ import checker from 'vite-plugin-checker';
 // ----------------------------------------------------------------------
 
 export default defineConfig({
+  base: '/',
   plugins: [
     react(),
     checker({
@@ -27,9 +28,9 @@ export default defineConfig({
     ],
   },
   server: {
-    port: 3030,
-  },
-  preview: {
-    port: 3030,
+    https: {
+      key: './travelhub-privateKey.key',
+      cert: './travelhub.crt',
+    },
   },
 });
