@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -24,9 +25,9 @@ public class Bid {
     long id;
 
     @NonNull
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "bid_statuses")
-    ArrayList<Status> statuses;
+    List<Status> statuses;
 
     @NonNull
     String reason;
@@ -52,19 +53,19 @@ public class Bid {
     @JoinColumn(name = "bid_expenses")
     Set<Expense> expenses;
 
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "bid_order")
     Document order;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "bid_tickets")
     Set<Document> tickets;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "bid_hotels")
     Set<Document> hotel;
 
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "bid_report")
     Document report;
 

@@ -20,10 +20,7 @@ import java.math.BigDecimal;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 @AllArgsConstructor
 @Service
@@ -38,7 +35,7 @@ public class BidService {
 
     public void createBid(String token, BidDTO bidDTO) {
         User user = authentificationService.getUserFromToken(token);
-        ArrayList<Status> status = new ArrayList<>();
+        List<Status> status = new ArrayList<>();
         status.add(new Status(statusCodeRepository.findByCode(1).orElseThrow(() -> new NoSuchException("No such START status code in database"))));
         Bid bid = new Bid(status, bidDTO.getReason(), bidDTO.getDepartureCity(), bidDTO.getArrivalCity(), bidDTO.getDepartureDate(), bidDTO.getArrivalDate(), user);
         bidRepository.save(bid);
@@ -76,7 +73,7 @@ public class BidService {
 
     public void approveSquad(BidDTO bidDTO){
         Bid bid = bidRepository.findById(bidDTO.getId()).orElseThrow(() -> new NoSuchException("No such user with id" + bidDTO.getId() + "in database"));
-        ArrayList<Status> bidStatus = bid.getStatuses();
+        List<Status> bidStatus = bid.getStatuses();
         int lastCode = bid.getStatuses().get(bid.getStatuses().size() - 1).getStatusCode().getCode();
         /*Status status = new Status(statusCodeRepository.findByCode(lastCode +1).orElseThrow());
         bidStatus.add(status);
@@ -98,7 +95,7 @@ public class BidService {
 
     public void rejectSquad(BidDTO bidDTO){
         Bid bid = bidRepository.findById(bidDTO.getId()).orElseThrow(() -> new NoSuchException("No such user with id" + bidDTO.getId() + "in database"));
-        ArrayList<Status> bidStatus = bid.getStatuses();
+        List<Status> bidStatus = bid.getStatuses();
         int lastCode = bid.getStatuses().get(bid.getStatuses().size() - 1).getStatusCode().getCode();
         Status status = new Status();
         switch (lastCode){
@@ -116,7 +113,7 @@ public class BidService {
 
     public void rejectAccounting(BidDTO bidDTO){
         Bid bid = bidRepository.findById(bidDTO.getId()).orElseThrow(() -> new NoSuchException("No such user with id" + bidDTO.getId() + "in database"));
-        ArrayList<Status> bidStatus = bid.getStatuses();
+        List<Status> bidStatus = bid.getStatuses();
         int lastCode = bid.getStatuses().get(bid.getStatuses().size() - 1).getStatusCode().getCode();
         Status status = new Status(statusCodeRepository.findByCode(6).orElseThrow());
         bidStatus.add(status);
@@ -126,7 +123,7 @@ public class BidService {
 
     public void approveManager(BidDTO bidDTO){
         Bid bid = bidRepository.findById(bidDTO.getId()).orElseThrow(() -> new NoSuchException("No such user with id" + bidDTO.getId() + "in database"));
-        ArrayList<Status> bidStatus = bid.getStatuses();
+        List<Status> bidStatus = bid.getStatuses();
         int lastCode = bid.getStatuses().get(bid.getStatuses().size() - 1).getStatusCode().getCode();
         Status status = new Status();
         switch (lastCode){
@@ -145,7 +142,7 @@ public class BidService {
 
     public void approveAccounting(BidDTO bidDTO) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
         Bid bid = bidRepository.findById(bidDTO.getId()).orElseThrow(() -> new NoSuchException("No such user with id" + bidDTO.getId() + "in database"));
-        ArrayList<Status> bidStatus = bid.getStatuses();
+        List<Status> bidStatus = bid.getStatuses();
         int lastCode = bid.getStatuses().get(bid.getStatuses().size() - 1).getStatusCode().getCode();
         Status status = new Status(statusCodeRepository.findByCode(lastCode +1).orElseThrow());
         bidStatus.add(status);
