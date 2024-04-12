@@ -24,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import static org.springframework.http.HttpHeaders.ACCEPT;
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS;
@@ -60,11 +61,12 @@ public class SecurityConfig {
     }
 
     private static final String X_REQUESTED_WITH = "X-Requested-With";
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
+        corsConfiguration.setAllowedOrigins(List.of("https://localhost:3000"));
         corsConfiguration.setAllowedHeaders(List.of(ORIGIN, ACCESS_CONTROL_ALLOW_ORIGIN, CONTENT_TYPE, ACCEPT, AUTHORIZATION, X_REQUESTED_WITH, ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS, ACCESS_CONTROL_ALLOW_CREDENTIALS));
         corsConfiguration.setExposedHeaders(List.of(ORIGIN, ACCESS_CONTROL_ALLOW_ORIGIN, CONTENT_TYPE, ACCEPT, AUTHORIZATION, X_REQUESTED_WITH, ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS, ACCESS_CONTROL_ALLOW_CREDENTIALS));
         corsConfiguration.setAllowedMethods(List.of(GET.name(), POST.name(), PUT.name(), PATCH.name(), DELETE.name(), OPTIONS.name()));
@@ -73,8 +75,8 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(request -> corsConfiguration))
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers( "/registration").permitAll()
-                                .requestMatchers( "/login").permitAll()
+                                .requestMatchers("/registration").permitAll()
+                                .requestMatchers("/login").permitAll()
                                 .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN", "ACCOUNTING", "MANAGER", "SQUAD")
                                 .requestMatchers("/tribe/**").hasAnyRole("SQUAD", "ADMIN")
                                 .requestMatchers("/accounting/**").hasAnyRole("ACCOUNTING", "ADMIN")
@@ -108,4 +110,5 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+    
 }
