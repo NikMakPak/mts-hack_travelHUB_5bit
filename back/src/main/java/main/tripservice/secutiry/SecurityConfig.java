@@ -25,7 +25,23 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
+import static org.springframework.http.HttpHeaders.ACCEPT;
+import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS;
+import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN;
+import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS;
+import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
+import static org.springframework.http.HttpHeaders.ORIGIN;
+import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.OPTIONS;
+import static org.springframework.http.HttpMethod.PATCH;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
+
 import java.util.Arrays;
+import java.util.List;
 
 
 @Configuration
@@ -35,35 +51,37 @@ public class SecurityConfig {
 
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
+    /*@Autowired
+    private CorsConfig config;*/
 
     @Bean
     public UserDetailsService userDetailsService() {
         return new CustomUserDetailsService();
     }
 
+    private static final String X_REQUESTED_WITH = "X-Requested-With";
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList("https://localhost:3000"));
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-        config.setExposedHeaders(Arrays.asList("Authorization"));
-        config.setAllowCredentials(true);
-        config.setMaxAge(3600L);
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
+        corsConfiguration.setAllowedHeaders(List.of(ORIGIN, ACCESS_CONTROL_ALLOW_ORIGIN, CONTENT_TYPE, ACCEPT, AUTHORIZATION, X_REQUESTED_WITH, ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS, ACCESS_CONTROL_ALLOW_CREDENTIALS));
+        corsConfiguration.setExposedHeaders(List.of(ORIGIN, ACCESS_CONTROL_ALLOW_ORIGIN, CONTENT_TYPE, ACCEPT, AUTHORIZATION, X_REQUESTED_WITH, ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS, ACCESS_CONTROL_ALLOW_CREDENTIALS));
+        corsConfiguration.setAllowedMethods(List.of(GET.name(), POST.name(), PUT.name(), PATCH.name(), DELETE.name(), OPTIONS.name()));
 
         return http.csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(request -> config))
+                .cors(cors -> cors.configurationSource(request -> corsConfiguration))
                 .authorizeRequests(authorizeRequests ->
-                authorizeRequests
-                        .requestMatchers("/registration").permitAll()
-                        .requestMatchers("/login").permitAll()
-                        .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN", "ACCOUNTING", "MANAGER","SQUAD" )
-                        .requestMatchers( "/tribe/**").hasAnyRole("SQUAD", "ADMIN")
-                        .requestMatchers("/accounting/**").hasAnyRole("ACCOUNTING", "ADMIN")
-                        .requestMatchers( "/manager/**").hasAnyRole("MANAGER", "ADMIN")
-                        .requestMatchers( "/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
-        )
+                        authorizeRequests
+                                .requestMatchers( "/registration").permitAll()
+                                .requestMatchers( "/login").permitAll()
+                                .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN", "ACCOUNTING", "MANAGER", "SQUAD")
+                                .requestMatchers("/tribe/**").hasAnyRole("SQUAD", "ADMIN")
+                                .requestMatchers("/accounting/**").hasAnyRole("ACCOUNTING", "ADMIN")
+                                .requestMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN")
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .anyRequest().authenticated()
+                )
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
